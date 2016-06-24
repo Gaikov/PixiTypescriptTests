@@ -1,11 +1,27 @@
 /**
  * Created by roman.gaikov on 6/15/2016.
  */
+var Logger = (function () {
+    function Logger() {
+    }
+    Logger.info = function () {
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i - 0] = arguments[_i];
+        }
+        console.log(args.join(" "));
+    };
+    return Logger;
+}());
+///<reference path="log/Logger.ts"/>
+/**
+ * Created by roman.gaikov on 6/15/2016.
+ */
 var TestClass = (function () {
     function TestClass() {
     }
     TestClass.log = function (message) {
-        console.log(message);
+        Logger.info("Message from test: ", message);
     };
     return TestClass;
 }());
