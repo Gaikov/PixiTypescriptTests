@@ -9,13 +9,8 @@ gulp.task("clean", function () {
     return del(["dist/*.js", "dist/*.js.map"]);
 });
 
-function compileTypescript(sources, destFile, relativePath)
+function compileTypescript(sources, destFile)
 {
-    if (!relativePath)
-    {
-        relativePath = "";
-    }
-
     return gulp.src(sources)
         .pipe(debug(), {title: "source"})
         .pipe(sourcemaps.init())
@@ -25,7 +20,7 @@ function compileTypescript(sources, destFile, relativePath)
             outFile: destFile
         }))
         .pipe(sourcemaps.write(".", {sourceRoot:"../src"}))
-        .pipe(gulp.dest("dist" + relativePath))
+        .pipe(gulp.dest("dist"))
 }
 
 gulp.task("compile", function () {
