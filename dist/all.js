@@ -100,8 +100,42 @@ var Test000 = (function (_super) {
     }
     return Test000;
 }(BaseWebGameApplication));
+/**
+ * Created by roman.gaikov on 6/28/2016.
+ */
+var UMath = (function () {
+    function UMath() {
+    }
+    UMath.rad = function (degrees) {
+        return degrees * Math.PI / 180;
+    };
+    return UMath;
+}());
+///<reference path="../base/BaseWebApplication.ts"/>
+///<reference path="../definitions/pixi.js.d.ts"/>
+///<reference path="../base/utils/UMath.ts"/>
+/**
+ * Created by roman.gaikov on 6/28/2016.
+ */
+var Test001 = (function (_super) {
+    __extends(Test001, _super);
+    function Test001() {
+        _super.call(this);
+        this._graphics = new PIXI.Graphics();
+        this._graphics.beginFill(0);
+        this._graphics.drawRect(0, 0, 100, 100);
+        this._graphics.x = 100;
+        this._graphics.y = 100;
+        this.stage.addChild(this._graphics);
+    }
+    Test001.prototype.animate = function (deltaTime) {
+        this._graphics.rotation += UMath.rad(deltaTime * 90);
+    };
+    return Test001;
+}(BaseWebGameApplication));
 ///<reference path="log/Logger.ts"/>
 ///<reference path="tests/Test000.ts"/>
+///<reference path="tests/Test001.ts"/>
 /**
  * Created by roman.gaikov on 6/15/2016.
  */
@@ -110,7 +144,8 @@ var Application = (function () {
     }
     Application.run = function () {
         Logger.info("starting");
-        new Test000();
+        //new Test000();
+        new Test001();
     };
     return Application;
 }());
