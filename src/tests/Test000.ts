@@ -9,5 +9,13 @@ class Test000 extends BaseWebGameApplication
     constructor() {
         super();
         Logger.info("init");
+
+        var tf = new PIXI.Text("some text");
+        tf.x = 100;
+        tf.y = 100;
+
+        this.stage.addChild(tf);
     }
+
+
 }

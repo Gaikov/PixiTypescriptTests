@@ -33,12 +33,15 @@ var BaseWebGameApplication = (function () {
         window.requestAnimationFrame(this.loop.bind(this));
         var self = this;
         window.addEventListener("resize", function () {
+            var w = window.innerWidth;
+            var h = window.innerHeight;
+            Logger.info("resize " + w + "x" + h);
             self._renderer.resize(window.innerWidth, window.innerHeight);
         });
     }
     BaseWebGameApplication.prototype.prepareRenderOptions = function () {
         var opts = {};
-        opts.backgroundColor = 0xffffff;
+        opts.backgroundColor = 0x99eeff;
         opts.autoResize = true;
         return opts;
     };
@@ -90,6 +93,10 @@ var Test000 = (function (_super) {
     function Test000() {
         _super.call(this);
         Logger.info("init");
+        var tf = new PIXI.Text("some text");
+        tf.x = 100;
+        tf.y = 100;
+        this.stage.addChild(tf);
     }
     return Test000;
 }(BaseWebGameApplication));

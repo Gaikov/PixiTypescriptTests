@@ -26,14 +26,18 @@ class BaseWebGameApplication {
         window.requestAnimationFrame(this.loop.bind(this));
 
         var self = this;
-        window.addEventListener("resize", function ():void {
+        window.addEventListener("resize", function ():void
+        {
+            var w = window.innerWidth;
+            var h = window.innerHeight;
+            Logger.info(`resize ${w}x${h}`);
             self._renderer.resize(window.innerWidth, window.innerHeight);
         });
     }
 
     protected prepareRenderOptions():PIXI.RendererOptions {
         var opts:PIXI.RendererOptions = {};
-        opts.backgroundColor = 0xffffff;
+        opts.backgroundColor = 0x99eeff;
         opts.autoResize = true;
 
         return opts;
