@@ -3,6 +3,9 @@ var ts = require("gulp-typescript");
 var debug = require("gulp-debug");
 var sourcemaps = require("gulp-sourcemaps");
 var del = require("del");
+var browserSync = require("browser-sync").create();
+var plumber = require("gulp-plumber");
+var notify = require("gulp-notify");
 
 gulp.task("clean", function () {
     return del("dist/**/*.*");
@@ -11,6 +14,13 @@ gulp.task("clean", function () {
 function compileTypescript(sources, destFile)
 {
     return gulp.src(sources)
+        .pipe(plumber({errorHandler: notify.onError(function (error) {
+            return {
+                title: "TypeScript",
+                message: error.message,
+                time: 3000
+            }
+        })}))
         .pipe(debug(), {title: "source"})
         .pipe(sourcemaps.init())
         .pipe(ts({
@@ -23,7 +33,8 @@ function compileTypescript(sources, destFile)
 }
 
 gulp.task("compile", function () {
-    return compileTypescript("src/**/*.ts", "all.js");
+    return compileTypescript("src/**/*.ts", "all.js")
+        //.pipe(notify({message:"completed!", onLast:true}))
 });
 
 gulp.task("copyTemplate", function () {
@@ -40,4 +51,12 @@ gulp.task("watch", function () {
 });
 
 gulp.task("dev", gulp.series("build", "watch"));
+
+gulp.task("server", function () {
+    browserSync.init({
+        server: "dist"
+    });
+
+    browserSync.watch("dist/**/*.*").on("change", browserSync.reload);
+});
 
