@@ -169,10 +169,26 @@ var FPSMeter = (function (_super) {
     };
     return FPSMeter;
 }(PIXI.Container));
+/**
+ * Created by roman.gaikov on 6/29/2016.
+ */
+var TestUtils = (function () {
+    function TestUtils() {
+    }
+    TestUtils.createSquare = function (size, color) {
+        Logger.info("color", color);
+        var res = new PIXI.Graphics();
+        res.beginFill(color);
+        res.drawRect(-size / 2, -size / 2, size, size);
+        return res;
+    };
+    return TestUtils;
+}());
 ///<reference path="../base/BaseWebApplication.ts"/>
 ///<reference path="../definitions/pixi.js.d.ts"/>
 ///<reference path="../base/utils/UMath.ts"/>
 ///<reference path="../base/debug/FPSMeter.ts"/>
+///<reference path="utils/TestUtils.ts"/>
 /**
  * Created by roman.gaikov on 6/28/2016.
  */
@@ -182,19 +198,17 @@ var Test001 = (function (_super) {
         _super.call(this);
         this._angle = 0;
         this._pos = new PIXI.Point(200, 200);
-        this._graphics = new PIXI.Graphics();
-        this._graphics.beginFill(0xffaaaa);
-        this._graphics.drawRect(-50, -50, 100, 100);
+        this._graphics = TestUtils.createSquare(100, 0xaaffff);
         this._graphics.x = 100;
         this._graphics.y = 100;
         this.stage.addChild(this._graphics);
         this.stage.addChild(new FPSMeter());
     }
     Test001.prototype.animate = function (deltaTime) {
-        this._graphics.rotation += UMath.rad(deltaTime * 90);
+        this._graphics.rotation += UMath.rad(deltaTime * -360);
         this._angle += UMath.rad(180) * deltaTime;
-        this._graphics.x = this._pos.x + Math.cos(this._angle) * 200;
-        this._graphics.y = this._pos.y + Math.sin(this._angle) * 100;
+        this._graphics.x = this._pos.x + Math.cos(this._angle) * 100;
+        this._graphics.y = this._pos.y + Math.sin(this._angle) * 200;
     };
     return Test001;
 }(BaseWebGameApplication));
@@ -215,20 +229,126 @@ var Application = (function () {
     return Application;
 }());
 (Application.run());
-///<reference path="log/Logger.ts"/>
-/**
- * Created by roman.gaikov on 6/15/2016.
- */
-var TestClass = (function () {
-    function TestClass() {
-    }
-    TestClass.log = function (message) {
-        Logger.info("Message from test: ", message);
-    };
-    return TestClass;
-}());
 /**
  * Created by roman.gaikov on 6/29/2016.
  */
+/**
+ * Created by roman.gaikov on 6/29/2016.
+ */
+///<reference path="IAction.ts"/>
+/**
+ * Created by roman.gaikov on 6/29/2016.
+ */
+var BaseActionsQueue = (function () {
+    function BaseActionsQueue() {
+        this._queue = [];
+    }
+    BaseActionsQueue.prototype.addAction = function (action) {
+        this._queue.push(action);
+    };
+    BaseActionsQueue.prototype.start = function () {
+        return (this._current == null && this.nextAction());
+    };
+    BaseActionsQueue.prototype.stop = function () {
+        if (this._current != null) {
+            this._current.onStopped(true);
+            this._current = null;
+        }
+        for (var _i = 0, _a = this._queue; _i < _a.length; _i++) {
+            var action = _a[_i];
+            action.onStopped(true);
+        }
+        this._queue.splice(0, this._queue.length);
+    };
+    BaseActionsQueue.prototype.isActive = function () {
+        return (this._current != null && this._current.getActive()) || this._queue.length > 0;
+    };
+    BaseActionsQueue.prototype.findAction = function (matchFunc) {
+        if (matchFunc(this._current)) {
+            return this._current;
+        }
+        for (var _i = 0, _a = this._queue; _i < _a.length; _i++) {
+            var a = _a[_i];
+            if (matchFunc(a)) {
+                return a;
+            }
+        }
+        return null;
+    };
+    BaseActionsQueue.prototype.update = function (deltaTime) {
+        if (this._current != null) {
+            if (!this._current.getActive()) {
+                if (!this.nextAction()) {
+                    this.stop();
+                }
+            }
+            if (this._current != null) {
+                this._current.frameStep(deltaTime);
+            }
+        }
+    };
+    BaseActionsQueue.prototype.nextAction = function () {
+        if (this._current != null) {
+            this._current.onStopped(false);
+        }
+        this._current = this._queue.shift();
+        if (this._current != null) {
+            this._current.onStart();
+            return true;
+        }
+        return false;
+    };
+    return BaseActionsQueue;
+}());
+///<reference path="BaseActionsQueue.ts"/>
+///<reference path="../IFrameListener.ts"/>
+/**
+ * Created by roman.gaikov on 6/29/2016.
+ */
+var ActionsQueue = (function (_super) {
+    __extends(ActionsQueue, _super);
+    function ActionsQueue() {
+        _super.call(this);
+    }
+    ActionsQueue.prototype.start = function () {
+        if (_super.prototype.start.call(this)) {
+            EnterFrameManager.instance().addListener(this);
+            return true;
+        }
+        return false;
+    };
+    ActionsQueue.prototype.stop = function () {
+        _super.prototype.stop.call(this);
+        EnterFrameManager.instance().removeListener(this);
+    };
+    ActionsQueue.prototype.onEnterFrame = function (deltaTime) {
+        this.update(deltaTime);
+    };
+    return ActionsQueue;
+}(BaseActionsQueue));
+/**
+ * Created by roman.gaikov on 6/29/2016.
+ */
+var BaseDeferredAction = (function () {
+    function BaseDeferredAction(timeLeft) {
+        this._timeLeft = timeLeft;
+    }
+    BaseDeferredAction.prototype.getActive = function () {
+        return this._timeLeft >= 0;
+    };
+    BaseDeferredAction.prototype.onStart = function () {
+    };
+    BaseDeferredAction.prototype.onStopped = function (cancelled) {
+    };
+    BaseDeferredAction.prototype.frameStep = function (deltaTime) {
+        this._timeLeft -= deltaTime;
+        if (this._timeLeft <= 0) {
+            this.doAction();
+        }
+    };
+    BaseDeferredAction.prototype.doAction = function () {
+    };
+    return BaseDeferredAction;
+}());
 
 //# sourceMappingURL=all.js.map
