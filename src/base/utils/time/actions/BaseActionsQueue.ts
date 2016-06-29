@@ -1,4 +1,3 @@
-'use strict';
 ///<reference path="IAction.ts"/>
 /**
  * Created by roman.gaikov on 6/29/2016.

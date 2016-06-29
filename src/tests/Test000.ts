@@ -1,4 +1,3 @@
-'use strict';
 ///<reference path="../base/BaseWebApplication.ts"/>
 ///<reference path="../log/Logger.ts"/>
 /**

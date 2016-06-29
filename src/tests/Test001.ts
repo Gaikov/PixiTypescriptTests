@@ -6,7 +6,6 @@
 /**
  * Created by roman.gaikov on 6/28/2016.
  */
-'use strict';
 
 class Test001 extends BaseWebGameApplication
 {

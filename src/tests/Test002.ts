@@ -1,11 +1,12 @@
 ///<reference path="../base/utils/time/actions/ActionsQueue.ts"/>
 ///<reference path="../base/utils/time/actions/DeferredDelegateAction.ts"/>
+///<reference path="../base/BaseWebApplication.ts"/>
 /**
  * Created by roman.gaikov on 6/29/2016.
  */
-'use strict';
 
-class Test002 extends BaseWebGameApplication {
+class Test002 extends BaseWebGameApplication
+{
     private _message:string = "Test002";
 
     constructor() {

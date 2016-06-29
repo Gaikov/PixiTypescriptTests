@@ -5,7 +5,6 @@
 /**
  * Created by roman.gaikov on 6/15/2016.
  */
-'use strict';
 
 class Application
 {
@@ -14,7 +13,7 @@ class Application
         Logger.info("starting");
         //new Test000();
         //new Test001();
-        //new Test002();
+        new Test002();
     }
 }
 

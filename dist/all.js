@@ -3,7 +3,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-'use strict';
 /**
  * Created by roman.gaikov on 6/15/2016.
  */
@@ -19,25 +18,37 @@ var Logger = (function () {
     };
     return Logger;
 }());
-'use strict';
-///<reference path="../base/BaseWebApplication.ts"/>
-///<reference path="../log/Logger.ts"/>
 /**
- * Created by roman.gaikov on 6/27/2016.
+ * Created by roman.gaikov on 6/29/2016.
  */
-var Test000 = (function (_super) {
-    __extends(Test000, _super);
-    function Test000() {
-        _super.call(this);
-        Logger.info("init");
-        var tf = new PIXI.Text("some text");
-        tf.x = 100;
-        tf.y = 100;
-        this.stage.addChild(tf);
+var EnterFrameManager = (function () {
+    function EnterFrameManager() {
+        this._listeners = [];
     }
-    return Test000;
-}(BaseWebGameApplication));
-'use strict';
+    EnterFrameManager.instance = function () {
+        if (EnterFrameManager._instance == null) {
+            EnterFrameManager._instance = new EnterFrameManager();
+        }
+        return EnterFrameManager._instance;
+    };
+    EnterFrameManager.prototype.addListener = function (l) {
+        this._listeners.push(l);
+    };
+    EnterFrameManager.prototype.removeListener = function (l) {
+        var index = this._listeners.indexOf(l);
+        if (index >= 0) {
+            this._listeners.splice(index, 1);
+        }
+    };
+    EnterFrameManager.prototype.onEnterFrame = function (deltaTime) {
+        //Logger.info(this + "enter frame");
+        for (var _i = 0, _a = this._listeners; _i < _a.length; _i++) {
+            var l = _a[_i];
+            l.onEnterFrame(deltaTime);
+        }
+    };
+    return EnterFrameManager;
+}());
 ///<reference path="../definitions/pixi.js.d.ts"/>
 ///<reference path="utils/time/EnterFrameManager.ts"/>
 /**
@@ -104,7 +115,23 @@ var BaseWebGameApplication = (function () {
     };
     return BaseWebGameApplication;
 }());
-'use strict';
+///<reference path="../base/BaseWebApplication.ts"/>
+///<reference path="../log/Logger.ts"/>
+/**
+ * Created by roman.gaikov on 6/27/2016.
+ */
+var Test000 = (function (_super) {
+    __extends(Test000, _super);
+    function Test000() {
+        _super.call(this);
+        Logger.info("init");
+        var tf = new PIXI.Text("some text");
+        tf.x = 100;
+        tf.y = 100;
+        this.stage.addChild(tf);
+    }
+    return Test000;
+}(BaseWebGameApplication));
 /**
  * Created by roman.gaikov on 6/28/2016.
  */
@@ -116,7 +143,6 @@ var UMath = (function () {
     };
     return UMath;
 }());
-'use strict';
 ///<reference path="../../definitions/pixi.js.d.ts"/>
 /**
  * Created by roman.gaikov on 6/29/2016.
@@ -166,7 +192,6 @@ var TestUtils = (function () {
 /**
  * Created by roman.gaikov on 6/28/2016.
  */
-'use strict';
 var Test001 = (function (_super) {
     __extends(Test001, _super);
     function Test001() {
@@ -187,131 +212,9 @@ var Test001 = (function (_super) {
     };
     return Test001;
 }(BaseWebGameApplication));
-'use strict';
-///<reference path="BaseActionsQueue.ts"/>
-///<reference path="../IFrameListener.ts"/>
 /**
  * Created by roman.gaikov on 6/29/2016.
  */
-var ActionsQueue = (function (_super) {
-    __extends(ActionsQueue, _super);
-    function ActionsQueue() {
-        _super.call(this);
-    }
-    ActionsQueue.prototype.start = function () {
-        if (_super.prototype.start.call(this)) {
-            EnterFrameManager.instance().addListener(this);
-            return true;
-        }
-        return false;
-    };
-    ActionsQueue.prototype.stop = function () {
-        _super.prototype.stop.call(this);
-        EnterFrameManager.instance().removeListener(this);
-    };
-    ActionsQueue.prototype.onEnterFrame = function (deltaTime) {
-        this.update(deltaTime);
-    };
-    return ActionsQueue;
-}(BaseActionsQueue));
-'use strict';
-///<reference path="BaseDeferredAction.ts"/>
-/**
- * Created by roman.gaikov on 6/29/2016.
- */
-var DeferredDelegateAction = (function (_super) {
-    __extends(DeferredDelegateAction, _super);
-    function DeferredDelegateAction(timeLeft, delegate) {
-        _super.call(this, timeLeft);
-        this._delegate = delegate;
-    }
-    DeferredDelegateAction.prototype.doAction = function () {
-        _super.prototype.doAction.call(this);
-        this._delegate();
-    };
-    return DeferredDelegateAction;
-}(BaseDeferredAction));
-///<reference path="../base/utils/time/actions/ActionsQueue.ts"/>
-///<reference path="../base/utils/time/actions/DeferredDelegateAction.ts"/>
-/**
- * Created by roman.gaikov on 6/29/2016.
- */
-'use strict';
-var Test002 = (function (_super) {
-    __extends(Test002, _super);
-    function Test002() {
-        var _this = this;
-        _super.call(this);
-        this._message = "Test002";
-        var queue = new ActionsQueue();
-        for (var i = 0; i < 10; i++) {
-            queue.addAction(new DeferredDelegateAction(0.5, function () { return _this.createItem(); }));
-        }
-        queue.start();
-    }
-    Test002.prototype.createItem = function () {
-        Logger.info("message: ", this._message);
-        var item = TestUtils.createSquare(100, 0xaaaaff);
-        item.x = Math.random() * window.innerWidth;
-        item.y = Math.random() * window.innerHeight;
-        this.stage.addChild(item);
-    };
-    return Test002;
-}(BaseWebGameApplication));
-///<reference path="log/Logger.ts"/>
-///<reference path="tests/Test000.ts"/>
-///<reference path="tests/Test001.ts"/>
-///<reference path="tests/Test002.ts"/>
-/**
- * Created by roman.gaikov on 6/15/2016.
- */
-'use strict';
-var Application = (function () {
-    function Application() {
-    }
-    Application.run = function () {
-        Logger.info("starting");
-        //new Test000();
-        //new Test001();
-        //new Test002();
-    };
-    return Application;
-}());
-(Application.run());
-'use strict';
-/**
- * Created by roman.gaikov on 6/29/2016.
- */
-var EnterFrameManager = (function () {
-    function EnterFrameManager() {
-        this._listeners = [];
-    }
-    EnterFrameManager.instance = function () {
-        if (EnterFrameManager._instance == null) {
-            EnterFrameManager._instance = new EnterFrameManager();
-        }
-        return EnterFrameManager._instance;
-    };
-    EnterFrameManager.prototype.addListener = function (l) {
-        this._listeners.push(l);
-    };
-    EnterFrameManager.prototype.removeListener = function (l) {
-        var index = this._listeners.indexOf(l);
-        if (index >= 0) {
-            this._listeners.splice(index, 1);
-        }
-    };
-    EnterFrameManager.prototype.onEnterFrame = function (deltaTime) {
-        //Logger.info(this + "enter frame");
-        for (var _i = 0, _a = this._listeners; _i < _a.length; _i++) {
-            var l = _a[_i];
-            l.onEnterFrame(deltaTime);
-        }
-    };
-    return EnterFrameManager;
-}());
-'use strict';
-'use strict';
 ///<reference path="IAction.ts"/>
 /**
  * Created by roman.gaikov on 6/29/2016.
@@ -377,7 +280,35 @@ var BaseActionsQueue = (function () {
     };
     return BaseActionsQueue;
 }());
-'use strict';
+/**
+ * Created by roman.gaikov on 6/29/2016.
+ */
+///<reference path="BaseActionsQueue.ts"/>
+///<reference path="../IFrameListener.ts"/>
+/**
+ * Created by roman.gaikov on 6/29/2016.
+ */
+var ActionsQueue = (function (_super) {
+    __extends(ActionsQueue, _super);
+    function ActionsQueue() {
+        _super.call(this);
+    }
+    ActionsQueue.prototype.start = function () {
+        if (_super.prototype.start.call(this)) {
+            EnterFrameManager.instance().addListener(this);
+            return true;
+        }
+        return false;
+    };
+    ActionsQueue.prototype.stop = function () {
+        _super.prototype.stop.call(this);
+        EnterFrameManager.instance().removeListener(this);
+    };
+    ActionsQueue.prototype.onEnterFrame = function (deltaTime) {
+        this.update(deltaTime);
+    };
+    return ActionsQueue;
+}(BaseActionsQueue));
 /**
  * Created by roman.gaikov on 6/29/2016.
  */
@@ -402,6 +333,67 @@ var BaseDeferredAction = (function () {
     };
     return BaseDeferredAction;
 }());
-'use strict';
+///<reference path="BaseDeferredAction.ts"/>
+/**
+ * Created by roman.gaikov on 6/29/2016.
+ */
+var DeferredDelegateAction = (function (_super) {
+    __extends(DeferredDelegateAction, _super);
+    function DeferredDelegateAction(timeLeft, delegate) {
+        _super.call(this, timeLeft);
+        this._delegate = delegate;
+    }
+    DeferredDelegateAction.prototype.doAction = function () {
+        _super.prototype.doAction.call(this);
+        this._delegate();
+    };
+    return DeferredDelegateAction;
+}(BaseDeferredAction));
+///<reference path="../base/utils/time/actions/ActionsQueue.ts"/>
+///<reference path="../base/utils/time/actions/DeferredDelegateAction.ts"/>
+///<reference path="../base/BaseWebApplication.ts"/>
+/**
+ * Created by roman.gaikov on 6/29/2016.
+ */
+var Test002 = (function (_super) {
+    __extends(Test002, _super);
+    function Test002() {
+        var _this = this;
+        _super.call(this);
+        this._message = "Test002";
+        var queue = new ActionsQueue();
+        for (var i = 0; i < 10; i++) {
+            queue.addAction(new DeferredDelegateAction(0.5, function () { return _this.createItem(); }));
+        }
+        queue.start();
+    }
+    Test002.prototype.createItem = function () {
+        Logger.info("message: ", this._message);
+        var item = TestUtils.createSquare(100, 0xaaaaff);
+        item.x = Math.random() * window.innerWidth;
+        item.y = Math.random() * window.innerHeight;
+        this.stage.addChild(item);
+    };
+    return Test002;
+}(BaseWebGameApplication));
+///<reference path="log/Logger.ts"/>
+///<reference path="tests/Test000.ts"/>
+///<reference path="tests/Test001.ts"/>
+///<reference path="tests/Test002.ts"/>
+/**
+ * Created by roman.gaikov on 6/15/2016.
+ */
+var Application = (function () {
+    function Application() {
+    }
+    Application.run = function () {
+        Logger.info("starting");
+        //new Test000();
+        //new Test001();
+        new Test002();
+    };
+    return Application;
+}());
+(Application.run());
 
 //# sourceMappingURL=all.js.map
