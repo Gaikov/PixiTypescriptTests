@@ -50,8 +50,6 @@ gulp.task("watch", function () {
     gulp.watch("template/**/*.*", gulp.series("copyTemplate"));
 });
 
-gulp.task("dev", gulp.series("build", "watch"));
-
 gulp.task("server", function () {
     browserSync.init({
         server: "dist"
@@ -59,4 +57,8 @@ gulp.task("server", function () {
 
     browserSync.watch("dist/**/*.*").on("change", browserSync.reload);
 });
+
+gulp.task("dev", gulp.series("build", gulp.parallel("watch", "server")));
+
+
 

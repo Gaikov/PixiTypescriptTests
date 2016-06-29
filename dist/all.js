@@ -18,7 +18,39 @@ var Logger = (function () {
     };
     return Logger;
 }());
+/**
+ * Created by roman.gaikov on 6/29/2016.
+ */
+var EnterFrameManager = (function () {
+    function EnterFrameManager() {
+        this._listeners = [];
+    }
+    EnterFrameManager.instance = function () {
+        if (EnterFrameManager._instance == null) {
+            EnterFrameManager._instance = new EnterFrameManager();
+        }
+        return EnterFrameManager._instance;
+    };
+    EnterFrameManager.prototype.addListener = function (l) {
+        this._listeners.push(l);
+    };
+    EnterFrameManager.prototype.removeListener = function (l) {
+        var index = this._listeners.indexOf(l);
+        if (index >= 0) {
+            this._listeners.splice(index, 1);
+        }
+    };
+    EnterFrameManager.prototype.onEnterFrame = function (deltaTime) {
+        //Logger.info(this + "enter frame");
+        for (var _i = 0, _a = this._listeners; _i < _a.length; _i++) {
+            var l = _a[_i];
+            l.onEnterFrame(deltaTime);
+        }
+    };
+    return EnterFrameManager;
+}());
 ///<reference path="../definitions/pixi.js.d.ts"/>
+///<reference path="utils/time/EnterFrameManager.ts"/>
 /**
  * Created by roman.gaikov on 6/27/2016.
  */
@@ -77,7 +109,7 @@ var BaseWebGameApplication = (function () {
          }
          deltaTime /= _smoothTime.length;*/
         //SimpleActuator.stage_onEnterFrame();
-        //EnterFrameManager.getInstance().onEnterFrame(deltaTime);
+        EnterFrameManager.instance().onEnterFrame(deltaTime);
         this.animate(deltaTime);
         this.renderer.render(this.stage);
     };
@@ -111,9 +143,36 @@ var UMath = (function () {
     };
     return UMath;
 }());
+///<reference path="../../definitions/pixi.js.d.ts"/>
+/**
+ * Created by roman.gaikov on 6/29/2016.
+ */
+var FPSMeter = (function (_super) {
+    __extends(FPSMeter, _super);
+    function FPSMeter() {
+        _super.call(this);
+        this._framesCount = 0;
+        this._totalTime = 0;
+        this._field = new PIXI.Text("fps", { font: "12px Arial" });
+        this.addChild(this._field);
+        EnterFrameManager.instance().addListener(this);
+    }
+    FPSMeter.prototype.onEnterFrame = function (deltaTime) {
+        this._framesCount++;
+        this._totalTime += deltaTime;
+        if (this._framesCount >= 10) {
+            var fps = this._framesCount / this._totalTime;
+            this._field.text = fps.toFixed(2) + " fps";
+            this._framesCount = 0;
+            this._totalTime = 0;
+        }
+    };
+    return FPSMeter;
+}(PIXI.Container));
 ///<reference path="../base/BaseWebApplication.ts"/>
 ///<reference path="../definitions/pixi.js.d.ts"/>
 ///<reference path="../base/utils/UMath.ts"/>
+///<reference path="../base/debug/FPSMeter.ts"/>
 /**
  * Created by roman.gaikov on 6/28/2016.
  */
@@ -121,15 +180,21 @@ var Test001 = (function (_super) {
     __extends(Test001, _super);
     function Test001() {
         _super.call(this);
+        this._angle = 0;
+        this._pos = new PIXI.Point(200, 200);
         this._graphics = new PIXI.Graphics();
-        this._graphics.beginFill(0);
-        this._graphics.drawRect(0, 0, 100, 100);
+        this._graphics.beginFill(0xffaaaa);
+        this._graphics.drawRect(-50, -50, 100, 100);
         this._graphics.x = 100;
         this._graphics.y = 100;
         this.stage.addChild(this._graphics);
+        this.stage.addChild(new FPSMeter());
     }
     Test001.prototype.animate = function (deltaTime) {
         this._graphics.rotation += UMath.rad(deltaTime * 90);
+        this._angle += UMath.rad(180) * deltaTime;
+        this._graphics.x = this._pos.x + Math.cos(this._angle) * 200;
+        this._graphics.y = this._pos.y + Math.sin(this._angle) * 100;
     };
     return Test001;
 }(BaseWebGameApplication));
@@ -162,5 +227,8 @@ var TestClass = (function () {
     };
     return TestClass;
 }());
+/**
+ * Created by roman.gaikov on 6/29/2016.
+ */
 
 //# sourceMappingURL=all.js.map

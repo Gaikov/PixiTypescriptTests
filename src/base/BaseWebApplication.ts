@@ -1,4 +1,5 @@
 ///<reference path="../definitions/pixi.js.d.ts"/>
+///<reference path="utils/time/EnterFrameManager.ts"/>
 /**
  * Created by roman.gaikov on 6/27/2016.
  */
@@ -77,7 +78,7 @@ class BaseWebGameApplication {
 
         //SimpleActuator.stage_onEnterFrame();
 
-        //EnterFrameManager.getInstance().onEnterFrame(deltaTime);
+        EnterFrameManager.instance().onEnterFrame(deltaTime);
         this.animate(deltaTime);
 
         this.renderer.render(this.stage);
