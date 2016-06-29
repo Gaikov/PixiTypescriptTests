@@ -6,7 +6,7 @@ class TestUtils
 {
     public static createSquare(size:number, color?:number):PIXI.Graphics
     {
-        Logger.info("color", color);
+        //Logger.info("color", color);
 
         var res = new PIXI.Graphics();
         res.beginFill(color);

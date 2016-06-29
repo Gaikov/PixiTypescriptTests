@@ -1,3 +1,5 @@
+'use strict';
+
 var gulp = require("gulp");
 var ts = require("gulp-typescript");
 var debug = require("gulp-debug");
@@ -26,6 +28,7 @@ function compileTypescript(sources, destFile)
         .pipe(ts({
             module: "commonjs",
             target: "es5",
+            noImplicitUseStrict: true,
             outFile: destFile
         }))
         .pipe(sourcemaps.write(".", {sourceRoot:"../src"}))

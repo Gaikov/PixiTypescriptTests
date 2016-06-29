@@ -1,3 +1,4 @@
+'use strict';
 ///<reference path="BaseActionsQueue.ts"/>
 ///<reference path="../IFrameListener.ts"/>
 /**

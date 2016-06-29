@@ -1,3 +1,4 @@
+'use strict';
 ///<reference path="../../definitions/pixi.js.d.ts"/>
 /**
  * Created by roman.gaikov on 6/29/2016.

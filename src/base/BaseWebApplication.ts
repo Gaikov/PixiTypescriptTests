@@ -1,3 +1,4 @@
+'use strict';
 ///<reference path="../definitions/pixi.js.d.ts"/>
 ///<reference path="utils/time/EnterFrameManager.ts"/>
 /**
