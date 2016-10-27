@@ -8,12 +8,13 @@ var del = require("del");
 var browserSync = require("browser-sync").create();
 var plumber = require("gulp-plumber");
 var notify = require("gulp-notify");
+var sequence = require("gulp-sequence");
 
 gulp.task("clean", function () {
     return del("dist/**/*.*");
 });
 
-function compileTypescript(sources, destFile)
+function compileTypescript(sources)
 {
     return gulp.src(sources)
         .pipe(plumber({errorHandler: notify.onError(function (error) {
@@ -25,32 +26,27 @@ function compileTypescript(sources, destFile)
         })}))
         .pipe(debug(), {title: "source"})
         .pipe(sourcemaps.init())
-        .pipe(ts({
-            module: "commonjs",
-            target: "es5",
-            noImplicitUseStrict: true,
-            outFile: destFile
-        }))
+        .pipe(ts("tsconfig.json"))
         .pipe(sourcemaps.write(".", {sourceRoot:"../src"}))
         .pipe(gulp.dest("dist"))
 }
 
 gulp.task("compile", function () {
-    return compileTypescript("src/**/*.ts", "all.js")
+    return compileTypescript("src/**/*.ts")
         //.pipe(notify({message:"completed!", onLast:true}))
 });
 
 gulp.task("copyTemplate", function () {
-   return gulp.src("./template/**/*.*", {since:gulp.lastRun("copyTemplate")})
+   return gulp.src("./template/**/*.*")
        .pipe(debug({title:"template"}))
        .pipe(gulp.dest("dist"));
 });
 
-gulp.task("build", gulp.series("clean", "compile", "copyTemplate"));
+gulp.task("build", sequence("clean", "compile", "copyTemplate"));
 
 gulp.task("watch", function () {
-    gulp.watch("src/**/*.*", gulp.series("compile"));
-    gulp.watch("template/**/*.*", gulp.series("copyTemplate"));
+    gulp.watch("src/**/*.*", ["compile"]);
+    gulp.watch("template/**/*.*", ["copyTemplate"]);
 });
 
 gulp.task("server", function () {
@@ -61,7 +57,7 @@ gulp.task("server", function () {
     browserSync.watch("dist/**/*.*").on("change", browserSync.reload);
 });
 
-gulp.task("dev", gulp.series("build", gulp.parallel("watch", "server")));
+gulp.task("dev", sequence("build", ["watch", "server"]));
 
 
 

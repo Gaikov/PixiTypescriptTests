@@ -125,7 +125,7 @@ var Test000 = (function (_super) {
     function Test000() {
         _super.call(this);
         Logger.info("init");
-        var tf = new PIXI.Text("some text");
+        var tf = new PIXI.Text("some text 1");
         tf.x = 100;
         tf.y = 100;
         this.stage.addChild(tf);
@@ -202,7 +202,7 @@ var Test001 = (function (_super) {
         this._graphics.x = 100;
         this._graphics.y = 100;
         this.stage.addChild(this._graphics);
-        this.stage.addChild(new FPSMeter());
+        //this.stage.addChild(new FPSMeter());
     }
     Test001.prototype.animate = function (deltaTime) {
         this._graphics.rotation += UMath.rad(deltaTime * -360);
@@ -376,10 +376,26 @@ var Test002 = (function (_super) {
     };
     return Test002;
 }(BaseWebGameApplication));
+/**
+ * Created by roman.gaikov on 10/25/2016.
+ */
+var Test003 = (function (_super) {
+    __extends(Test003, _super);
+    function Test003() {
+        _super.call(this);
+        Logger.info("test003");
+        var g = new PIXI.Graphics();
+        g.beginFill(0xff0000, 1);
+        g.drawRect(0, 0, 100, 100);
+        this.stage.addChild(g);
+    }
+    return Test003;
+}(BaseWebGameApplication));
 ///<reference path="log/Logger.ts"/>
 ///<reference path="tests/Test000.ts"/>
 ///<reference path="tests/Test001.ts"/>
 ///<reference path="tests/Test002.ts"/>
+///<reference path="tests/Test003.ts"/>
 /**
  * Created by roman.gaikov on 6/15/2016.
  */
@@ -390,7 +406,8 @@ var Application = (function () {
         Logger.info("starting");
         //new Test000();
         //new Test001();
-        new Test002();
+        //new Test002();
+        new Test003();
     };
     return Application;
 }());

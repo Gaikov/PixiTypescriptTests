@@ -22,7 +22,7 @@ class Test001 extends BaseWebGameApplication
         this._graphics.y = 100;
 
         this.stage.addChild(this._graphics);
-        this.stage.addChild(new FPSMeter());
+        //this.stage.addChild(new FPSMeter());
     }
 
     protected animate(deltaTime:number):void

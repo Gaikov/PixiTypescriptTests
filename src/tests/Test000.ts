@@ -10,7 +10,7 @@ class Test000 extends BaseWebGameApplication
         super();
         Logger.info("init");
 
-        var tf = new PIXI.Text("some text");
+        var tf = new PIXI.Text("some text 1");
         tf.x = 100;
         tf.y = 100;
 

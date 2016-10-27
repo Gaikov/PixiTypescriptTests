@@ -13,7 +13,8 @@
   },
   "devDependencies": {
     "browser-sync": "^2.13.0",
-    "gulp-notify": "^2.2.0"
+    "gulp-notify": "^2.2.0",
+    "gulp-sequence": "^0.4.6"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
