@@ -6,7 +6,7 @@ import {DeferredDelegateAction} from "../base/utils/time/actions/DeferredDelegat
 import {Logger} from "../log/Logger";
 import {ActionsQueue} from "../base/utils/time/actions/ActionsQueue";
 
-class Test002 extends BaseWebGameApplication
+export class Test002 extends BaseWebGameApplication
 {
     private _message:string = "Test002";
 

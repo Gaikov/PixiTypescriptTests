@@ -4,21 +4,23 @@
   "description": "",
   "main": "gulpfile.js",
   "dependencies": {
+    "pixi.js": "^4.5.4"
+  },
+  "devDependencies": {
+    "@types/pixi.js": "^4.5.2",
     "gulp": "^3.9.1",
     "gulp-debug": "^2.1.2",
     "gulp-plumber": "^1.1.0",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-typescript": "^2.13.6",
+    "gulp-notify": "^2.2.0",
+    "gulp-sequence": "^0.4.6",
     "plumber": "^0.4.8",
-    "pixi.js": "^4.5.4"
-  },
-  "devDependencies": {
-    "@types/pixi.js": "^4.5.2",
+    "awesome-typescript-loader": "^3.2.2",
     "browser-sync": "^2.13.0",
     "del": "^3.0.0",
-    "gulp-notify": "^2.2.0",
-    "gulp-sequence": "^0.4.6"
-
+    "path": "^0.12.7",
+    "webpack": "^3.5.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
