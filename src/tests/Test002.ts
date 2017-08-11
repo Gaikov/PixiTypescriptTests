@@ -5,6 +5,7 @@ import {BaseWebGameApplication} from "../base/BaseWebApplication";
 import {DeferredDelegateAction} from "../base/utils/time/actions/DeferredDelegateAction";
 import {Logger} from "../log/Logger";
 import {ActionsQueue} from "../base/utils/time/actions/ActionsQueue";
+import {TestUtils} from "./utils/TestUtils";
 
 export class Test002 extends BaseWebGameApplication
 {

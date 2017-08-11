@@ -12,6 +12,7 @@ export class BaseWebGameApplication {
     private _renderer:PIXI.SystemRenderer;
     private _prevTime:number = 0;
     private _stage:PIXI.Container = new PIXI.Container();
+    private _fpsMeter:FPSMeter = new FPSMeter();
 
     public constructor() {
         //new Perf();
@@ -60,6 +61,8 @@ export class BaseWebGameApplication {
 
     private loop(currentTime:number):void {
         window.requestAnimationFrame(this.loop.bind(this));
+        this._fpsMeter.tick();
+
         const deltaTime:number = (currentTime - this._prevTime) / 1000;
         this._prevTime = currentTime;
 

@@ -2,7 +2,7 @@
  * Created by roman.gaikov on 6/29/2016.
  */
 
-class TestUtils
+export class TestUtils
 {
     public static createSquare(size:number, color?:number):PIXI.Graphics
     {

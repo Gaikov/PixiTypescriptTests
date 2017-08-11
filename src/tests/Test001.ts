@@ -3,6 +3,7 @@
  */
 import {BaseWebGameApplication} from "../base/BaseWebApplication";
 import {UMath} from "../base/utils/UMath";
+import {TestUtils} from "./utils/TestUtils";
 
 export class Test001 extends BaseWebGameApplication
 {
@@ -19,7 +20,6 @@ export class Test001 extends BaseWebGameApplication
         this._graphics.y = 100;
 
         this.stage.addChild(this._graphics);
-        //this.stage.addChild(new FPSMeter());
     }
 
     protected animate(deltaTime:number):void
