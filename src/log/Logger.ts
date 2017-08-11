@@ -3,9 +3,9 @@
  */
 
 
-class Logger
+export class Logger
 {
-    public static info(...args):void
+    public static info(...args:any[]):void
     {
         console.log(args.join(" "));
     }

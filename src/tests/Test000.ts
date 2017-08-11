@@ -1,16 +1,16 @@
-///<reference path="../base/BaseWebApplication.ts"/>
-///<reference path="../log/Logger.ts"/>
 /**
  * Created by roman.gaikov on 6/27/2016.
  */
+import {BaseWebGameApplication} from "../base/BaseWebApplication";
+import {Logger} from "../log/Logger";
 
-class Test000 extends BaseWebGameApplication
+export class Test000 extends BaseWebGameApplication
 {
     constructor() {
         super();
         Logger.info("init");
 
-        var tf = new PIXI.Text("some text 1");
+        const tf = new PIXI.Text("some text 1");
         tf.x = 100;
         tf.y = 100;
 

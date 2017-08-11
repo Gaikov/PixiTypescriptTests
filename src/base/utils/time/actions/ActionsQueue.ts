@@ -1,10 +1,11 @@
-///<reference path="BaseActionsQueue.ts"/>
-///<reference path="../IFrameListener.ts"/>
 /**
  * Created by roman.gaikov on 6/29/2016.
  */
+import {IFrameListener} from "../IFrameListener";
+import {EnterFrameManager} from "../EnterFrameManager";
+import {BaseActionsQueue} from "./BaseActionsQueue";
 
-class ActionsQueue extends BaseActionsQueue implements IFrameListener {
+export class ActionsQueue extends BaseActionsQueue implements IFrameListener {
     constructor() {
         super();
     }

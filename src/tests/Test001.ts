@@ -1,13 +1,10 @@
-///<reference path="../base/BaseWebApplication.ts"/>
-///<reference path="../definitions/pixi.js.d.ts"/>
-///<reference path="../base/utils/UMath.ts"/>
-///<reference path="../base/debug/FPSMeter.ts"/>
-///<reference path="utils/TestUtils.ts"/>
 /**
  * Created by roman.gaikov on 6/28/2016.
  */
+import {BaseWebGameApplication} from "../base/BaseWebApplication";
+import {UMath} from "../base/utils/UMath";
 
-class Test001 extends BaseWebGameApplication
+export class Test001 extends BaseWebGameApplication
 {
     private _graphics:PIXI.Graphics;
     private _angle:number = 0;

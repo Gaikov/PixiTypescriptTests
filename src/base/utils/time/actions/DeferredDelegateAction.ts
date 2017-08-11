@@ -1,9 +1,10 @@
-///<reference path="BaseDeferredAction.ts"/>
 /**
  * Created by roman.gaikov on 6/29/2016.
  */
 
-class DeferredDelegateAction extends BaseDeferredAction
+import {BaseDeferredAction} from "./BaseDeferredAction";
+
+export class DeferredDelegateAction extends BaseDeferredAction
 {
     private _delegate:()=>void;
     

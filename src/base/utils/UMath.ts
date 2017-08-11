@@ -2,7 +2,7 @@
  * Created by roman.gaikov on 6/28/2016.
  */
 
-class UMath
+export class UMath
 {
     public static rad(degrees:number):number
     {

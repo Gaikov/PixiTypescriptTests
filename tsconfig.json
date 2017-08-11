@@ -1,15 +1,20 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
     "target": "es5",
+    "module": "es2015",
+    "lib": ["es2015", "dom"],
+    "moduleResolution": "node",
     "sourceMap": true,
     "noImplicitUseStrict": true,
+    "noImplicitAny": true,
     "outFile": "all.js"
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist"
   ],
-  "files": [
-    "src/Main.ts"
+  "include": [
+    "src/**/*"
   ]
+
 }

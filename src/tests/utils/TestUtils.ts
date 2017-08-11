@@ -8,7 +8,7 @@ class TestUtils
     {
         //Logger.info("color", color);
 
-        var res = new PIXI.Graphics();
+        const res = new PIXI.Graphics();
         res.beginFill(color);
         res.drawRect(-size/2, -size/2, size, size);
 

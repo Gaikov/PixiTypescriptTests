@@ -1,8 +1,9 @@
 /**
  * Created by roman.gaikov on 6/29/2016.
  */
+import {IFrameListener} from "./IFrameListener";
 
-class EnterFrameManager {
+export class EnterFrameManager {
     private static _instance:EnterFrameManager;
 
     private _listeners:Array<IFrameListener> = [];

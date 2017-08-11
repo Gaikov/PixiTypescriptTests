@@ -1,9 +1,10 @@
-///<reference path="../base/utils/time/actions/ActionsQueue.ts"/>
-///<reference path="../base/utils/time/actions/DeferredDelegateAction.ts"/>
-///<reference path="../base/BaseWebApplication.ts"/>
 /**
  * Created by roman.gaikov on 6/29/2016.
  */
+import {BaseWebGameApplication} from "../base/BaseWebApplication";
+import {DeferredDelegateAction} from "../base/utils/time/actions/DeferredDelegateAction";
+import {Logger} from "../log/Logger";
+import {ActionsQueue} from "../base/utils/time/actions/ActionsQueue";
 
 class Test002 extends BaseWebGameApplication
 {
@@ -11,7 +12,7 @@ class Test002 extends BaseWebGameApplication
 
     constructor() {
         super();
-        var queue = new ActionsQueue();
+        const queue = new ActionsQueue();
 
         for (let i = 0; i < 10; i++) {
             queue.addAction(new DeferredDelegateAction(0.5, ()=> this.createItem()));
@@ -22,7 +23,7 @@ class Test002 extends BaseWebGameApplication
 
     private createItem():void {
         Logger.info("message: ", this._message);
-        var item = TestUtils.createSquare(100, 0xaaaaff);
+        const item = TestUtils.createSquare(100, 0xaaaaff);
         item.x = Math.random() * window.innerWidth;
         item.y = Math.random() * window.innerHeight;
         this.stage.addChild(item);

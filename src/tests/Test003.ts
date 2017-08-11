@@ -1,8 +1,10 @@
 /**
  * Created by roman.gaikov on 10/25/2016.
  */
+import {BaseWebGameApplication} from "../base/BaseWebApplication";
+import {Logger} from "../log/Logger";
 
-class Test003 extends BaseWebGameApplication
+export class Test003 extends BaseWebGameApplication
 {
 	constructor()
 	{

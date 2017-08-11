@@ -1,4 +1,6 @@
-///<reference path="../../definitions/pixi.js.d.ts"/>
+import {IFrameListener} from "../utils/time/IFrameListener";
+import {EnterFrameManager} from "../utils/time/EnterFrameManager";
+
 /**
  * Created by roman.gaikov on 6/29/2016.
  */
@@ -20,7 +22,7 @@ class FPSMeter extends PIXI.Container implements IFrameListener {
         this._framesCount++;
         this._totalTime += deltaTime;
         if (this._framesCount >= 10) {
-            var fps = this._framesCount / this._totalTime;
+            const fps = this._framesCount / this._totalTime;
             this._field.text = `${fps.toFixed(2)} fps`;
             this._framesCount = 0;
             this._totalTime = 0;

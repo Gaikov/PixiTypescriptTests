@@ -1,8 +1,9 @@
 /**
  * Created by roman.gaikov on 6/29/2016.
  */
+import {IAction} from "./IAction";
 
-class BaseDeferredAction implements IAction {
+export class BaseDeferredAction implements IAction {
     private _timeLeft:number;
 
     constructor(timeLeft:number) {
