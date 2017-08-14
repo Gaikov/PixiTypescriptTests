@@ -10,8 +10,8 @@
     "outFile": "all.js"
   },
   "exclude": [
-    "dist"
-
+    "dist",
+    "node_modules"
   ],
   "include": [
     "src/**/*"

@@ -25,7 +25,8 @@
     "webpack": "^3.5.3"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "webpack-dev-server",
+    "build": "webpack"
   },
   "author": "Roman Gaikov",
   "license": "ISC"

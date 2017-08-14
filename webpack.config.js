@@ -12,14 +12,14 @@ module.exports = {
         extensions: ['.ts', '.tsx', '.js', '.jsx']
     },
 
-    entry: getPath('src/Main.ts'),
+    entry: './src/Main.ts',
 
     // Source maps support ('inline-source-map' also works)
     devtool: 'source-map',
 
     output: {
         filename: 'all.js',
-        path: path.resolve(__dirname, 'dist')
+        path: getPath('dist')
     },
 
     // Add the loader for .ts files.
@@ -31,7 +31,8 @@ module.exports = {
             }
         ]
     },
-    plugins: [
-        // new CheckerPlugin()
-    ]
+
+    devServer: {
+        contentBase: "./dist"
+    }
 };
